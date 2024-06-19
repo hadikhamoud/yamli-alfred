@@ -3,6 +3,9 @@ import requests
 import json
 import pickle
 
+config = json.load(open('config.json', 'r'))
+yamli_credentials = config["yamli-credentials"]
+
 def load_session():
     with open('/tmp/yamli_session.pkl', 'rb') as f:
         session = pickle.load(f)
@@ -11,14 +14,10 @@ def load_session():
 def query_yamli_api(query, session):
     url = "https://api.yamli.com/transliterate.ashx"
     params = {
-        "word": query,
-        "tool": "api",
-        "account_id": "000006",
-        "prot": "https",
-        "hostname": "AliMZaini",
-        "path": "yamli-api",
-        "build": "5515"
+        "word": query
     }
+    params.update(yamli_credentials)
+
     response = session.get(url, params=params)
     if response.status_code == 200:
         return response.json()["r"].split('|')
@@ -29,7 +28,7 @@ def strip_suffixes(word):
 
 def generate_alfred_items(results):
     items = []
-    for result in results[:3]:  
+    for result in results[:3]:
         stripped_result = strip_suffixes(result)
         items.append({
             "title": stripped_result,
@@ -48,4 +47,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

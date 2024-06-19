@@ -1,0 +1,10 @@
+{
+  "yamli-credentials": {
+    "tool": "api",
+    "account_id": "account_num",
+    "prot": "https",
+    "hostname": "hostname",
+    "path": "path",
+    "build": "build_name"
+  }
+}
